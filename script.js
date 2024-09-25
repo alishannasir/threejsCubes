@@ -1,47 +1,27 @@
-// Create the scene, camera, and renderer once for the whole setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
+scene.add(camera);
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector("#canvas") });
+const canvas = document.querySelector("#canvas");
+const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Function to create cubes and add them to the same scene
-function MakeInstance(geometry, color, position) {
-    const material = new THREE.MeshBasicMaterial({ color });
-    const cube = new THREE.Mesh(geometry, material);
-    cube.position.x = position;
-    scene.add(cube);
-    return cube;
-}
+const material = new THREE.MeshBasicMaterial({ color: "red" });
 
-// Geometry for the cubes
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+const radiusTop = 2.0; 
+const radiusBottom = 2.0;  
+const height =  1.8;  
+const radialSegments = 10;  
+const geometry = new THREE.CylinderGeometry(
+	radiusTop, radiusBottom, height, radialSegments );
+const circle = new THREE.Mesh(geometry, material);
+scene.add(circle);
 
-// Create multiple cubes
-const cubes = [
-    MakeInstance(geometry, "yellow", 4),
-    MakeInstance(geometry, "red", 2),
-    MakeInstance(geometry, "blue", -2),
-];
-
-function render(time) {
-    time *= 0.001;  // Convert time to seconds
-
-    // Rotate each cube
-    cubes.forEach((cube, ndx) => {
-        const speed = 1 + ndx * 0.1;
-        const rot = time * speed;
-        cube.rotation.x = rot;
-        cube.rotation.y = rot;
-    });
-
-    // Render the scene with the camera
+function animate() {
+    requestAnimationFrame(animate);
+    circle.rotation.y += 0.01;
     renderer.render(scene, camera);
-
-    // Request the next frame
-    requestAnimationFrame(render);
 }
 
-// Start the rendering loop
-requestAnimationFrame(render);
+animate();
