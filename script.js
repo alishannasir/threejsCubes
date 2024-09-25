@@ -9,14 +9,18 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 const material = new THREE.MeshBasicMaterial({ color: "red" });
 
-const radiusTop = 2.0; 
-const radiusBottom = 2.0;  
-const height =  1.8;  
-const radialSegments = 10;  
-const geometry = new THREE.CylinderGeometry(
-	radiusTop, radiusBottom, height, radialSegments );
-const circle = new THREE.Mesh(geometry, material);
-scene.add(circle);
+const loader = new THREE.FontLoader();
+loader.load("https://threejs.org/examples/fonts/helvetiker_regular.typeface.json", function(font) {    const textGeometry = new THREE.TextGeometry("Hello World", {
+        font: font,
+        size: 3,
+        height: 3,
+        curveSegments: 1,
+        bevelEnabled: fasle,
+        bevelThickness: 0.1,
+    });
+    const text = new THREE.Mesh(textGeometry, material);
+    scene.add(text);
+});
 
 function animate() {
     requestAnimationFrame(animate);
